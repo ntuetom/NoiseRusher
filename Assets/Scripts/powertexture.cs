@@ -28,7 +28,9 @@ public class powertexture : MonoBehaviour {
            
             ftemptime = 0;
         }
-        if ((playercar.V2carspeed == Vector2.zero) && iPower > 0 && !bistop)
+        if (playercar.bcollider && iPower > 0)
+            iPower--;
+        /*if ((playercar.V2carspeed == Vector2.zero) && iPower > 0 && !bistop)
         {
             bistop = true;
             iPower--;
@@ -36,7 +38,7 @@ public class powertexture : MonoBehaviour {
         if (playercar.V2carspeed != Vector2.zero)
         {
             bistop = false;
-        }
+        }*/
     }
     void OnGUI() {
         GUI.color = Color.red;

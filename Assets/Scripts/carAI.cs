@@ -13,7 +13,7 @@ public class carAI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //transform.position -= transform.up;
+       // transform.position += transform.up;
     }
     void OnTriggerEnter2D(Collider2D col)
     {

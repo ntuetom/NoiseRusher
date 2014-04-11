@@ -10,6 +10,7 @@ public class playercar : MonoBehaviour {
     public static playerdata.Roadstate roadstate;
     public int icount;
     public static Vector2 V2carspeed;
+    public static bool bcollider;
 	// Use this for initialization
    
 	void Start () {
@@ -21,6 +22,7 @@ public class playercar : MonoBehaviour {
                 GOblock[i] = GameObject.Find("block" + (i + 1));
         }
         roadstate = playerdata.Roadstate.Horizon;
+        bcollider = false;
 	}
 	
 	// Update is called once per frame
@@ -72,7 +74,7 @@ public class playercar : MonoBehaviour {
         {
             roadstate = playerdata.Roadstate.Horizon;
         }
-    
+        
     }
 
     void OnTriggerEnter2D(Collider2D col){
@@ -93,7 +95,9 @@ public class playercar : MonoBehaviour {
                 break;
             case "othercar":
                 rigidbody2D.velocity = Vector2.zero;
+                bcollider = true;
                 break;
+
         }
     }
 
