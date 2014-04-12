@@ -18,7 +18,7 @@ public class camera : MonoBehaviour {
        
         
         //transform.position = Vector3.MoveTowards(transform.position, new Vector3(target.position.x, target.position.y, transform.position.z), Time.deltaTime * playerdata.FCamerafellowspeed);
-        if(target.position.y>=-5)
+        //if(target.position.y>=-5)
         if (playercar.roadstate == playerdata.Roadstate.vertical)
         {
             transform.position = new Vector3(transform.position.x, target.position.y, transform.position.z);

@@ -27,7 +27,7 @@ public class option : MonoBehaviour {
             if(!bStart)Application.Quit();
         if (Input.GetKeyUp(KeyCode.Space))
         {
-            if(bStart)Application.LoadLevel("stage1");
+            if(bStart)Application.LoadLevel(Application.loadedLevel+1);
         }
 	}
 
@@ -45,17 +45,15 @@ public class option : MonoBehaviour {
                 if (i == 0)
                 {
                     if (bStart)
-                        GUI.color = Color.red;
+                        GUI.DrawTexture(rect[i], texturebtn[i+2]);
                     else
-                        GUI.color = Color.white;
-                    GUI.DrawTexture(rect[i], texturebtn[i]);
+                        GUI.DrawTexture(rect[i], texturebtn[i]);
                 }
                 else {
                     if (bStart)
-                        GUI.color = Color.white;
+                        GUI.DrawTexture(rect[i], texturebtn[i]);
                     else
-                        GUI.color = Color.red;
-                    GUI.DrawTexture(rect[i], texturebtn[i]);
+                        GUI.DrawTexture(rect[i], texturebtn[i+2]);
                 }
             }
            

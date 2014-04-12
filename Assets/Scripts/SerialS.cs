@@ -4,9 +4,9 @@ using System;
 using System.IO.Ports;
 public class SerialS : MonoBehaviour {
 
-    public static float fx_axis;
-    public static float fy_axis;
-    public static float fsound;
+    public float fx_axis;
+    public float fy_axis;
+    public float fsound;
     float fa1;
     public string COMPort; //Com Port
     public static SerialPort stream;
@@ -14,23 +14,26 @@ public class SerialS : MonoBehaviour {
 	// Use this for initialization
     void Start()
     {
-        stream = new SerialPort(COMPort, 19200);
+        stream = new SerialPort(COMPort, 9600);
         //設定傳輸速率
         stream.Open(); //Open the Serial Stream.}
+        DontDestroyOnLoad(gameObject);
     }
 	// Update is called once per frame
-	void Update () {
-        
+    void Update()
+    {
+        #region
+
         if (stream.IsOpen)
         {
-           
+
             string value = stream.ReadLine(); //Read the information
             string[] vec3 = value.Split(',');
             if (vec3.Length >= 3)
             {
                 fx_axis = Convert.ToSingle(vec3[0]);
-                fy_axis = Convert.ToSingle(vec3[1]);
-                fsound = Convert.ToSingle(vec3[2]);
+                fy_axis = Convert.ToSingle(vec3[2]);
+                fsound = Convert.ToSingle(vec3[1]);
             }
 
             /*float v0;
@@ -46,5 +49,7 @@ public class SerialS : MonoBehaviour {
             }
             stream.WriteLine(SendToArduino);*/
         }
-	}
+        #endregion
+    }
 }
+

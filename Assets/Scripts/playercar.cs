@@ -3,6 +3,7 @@ using System.Collections;
 
 public class playercar : MonoBehaviour {
 
+    public GameObject arduinodata;
     public GameObject[] GOblock;
     public GameObject GObullet;
     private GameObject GObullettemp;
@@ -11,18 +12,23 @@ public class playercar : MonoBehaviour {
     public int icount;
     public static Vector2 V2carspeed;
     public static bool bcollider;
+    public static bool bbigweapon;
 	// Use this for initialization
    
 	void Start () {
 	    fxtranslate = 0;
         fytranslate = 0;
-        GOblock = new GameObject[10];
-        for (int i = 0;i<=9 ; i++) {
+        GOblock = new GameObject[16];
+        for (int i = 0;i<=15 ; i++) {
             if(GameObject.Find("block" + (i + 1)))
                 GOblock[i] = GameObject.Find("block" + (i + 1));
         }
         roadstate = playerdata.Roadstate.Horizon;
         bcollider = false;
+        bbigweapon = false;
+        V2carspeed = Vector2.zero;
+        if(arduinodata = GameObject.Find("Arduino"))
+            arduinodata = GameObject.Find("Arduino");
 	}
 	
 	// Update is called once per frame
@@ -34,6 +40,7 @@ public class playercar : MonoBehaviour {
         //transform.Translate(fxtranslate, fytranslate, 0);
         //Debug.Log(rigidbody2D.velocity);
        #region
+        if (playerdata.bstart)
         {
             if (Input.GetKeyDown(KeyCode.UpArrow))
             {
@@ -63,8 +70,17 @@ public class playercar : MonoBehaviour {
                 GObullettemp = (GameObject)GameObject.Instantiate(GObullet, transform.position, Quaternion.identity);
                 GObullettemp.rigidbody2D.velocity = transform.up * playerdata.Fbulletforce;
             }
-        }
+            if (Input.GetKeyUp(KeyCode.A) && playerdata.iPower >= 6)
+            {
+                Debug.Log("A");
+                playerdata.iPower = 0;
+                bbigweapon = true;
+            }
+            else {
+                bbigweapon = false;
+            }
 
+        }
        #endregion
         if (icount % 2 == 0)
         {
@@ -74,7 +90,6 @@ public class playercar : MonoBehaviour {
         {
             roadstate = playerdata.Roadstate.Horizon;
         }
-        
     }
 
     void OnTriggerEnter2D(Collider2D col){
@@ -84,20 +99,29 @@ public class playercar : MonoBehaviour {
                 transform.Rotate(Vector3.forward, 90f);
                 Destroy(col.gameObject);
                 GOblock[icount-1].collider2D.isTrigger = false;
-          
                 break;
             case "SR":
                 icount++;
                 transform.Rotate(Vector3.forward, -90f);
                 Destroy(col.gameObject);
                 GOblock[icount-1].collider2D.isTrigger = false;
-                
                 break;
+            case "win":
+                playerdata.bsuccess =true;
+                break;
+            
+        }
+    }
+
+    void OnCollisionEnter2D(Collision2D coll) {
+        switch (coll.gameObject.tag) {
             case "othercar":
                 rigidbody2D.velocity = Vector2.zero;
                 bcollider = true;
                 break;
-
+            default:
+                bcollider = false;
+                break;
         }
     }
 
