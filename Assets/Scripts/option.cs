@@ -3,23 +3,26 @@ using System.Collections;
 
 public class option : MonoBehaviour {
 
+    public GameObject arduinodata;
     private Vector2 _ScreenSize = new Vector2(Screen.width,Screen.height);
     public Rect[] RectButton;
     public Texture[] texturebtn;
     public bool bStart;
 	// Use this for initialization
 	void Start () {
+        if (arduinodata = GameObject.Find("Arduino"))
+            arduinodata = GameObject.Find("Arduino");
         bStart = true;
 	}
 	
 	// Update is called once per frame
 	void Update () {
         
-        if (Input.GetKeyDown(KeyCode.UpArrow))
+        if (Input.GetKeyDown(KeyCode.UpArrow) || arduinodata.GetComponent<SerialS>().btnstate == SerialS.BtnState.up)
         {
             bStart = true;
         }
-        if (Input.GetKeyDown(KeyCode.DownArrow))
+        if (Input.GetKeyDown(KeyCode.DownArrow) || arduinodata.GetComponent<SerialS>().btnstate == SerialS.BtnState.down)
         {
             bStart = false;
         }

@@ -27,8 +27,12 @@ public class playercar : MonoBehaviour {
         bcollider = false;
         bbigweapon = false;
         V2carspeed = Vector2.zero;
-        if(arduinodata = GameObject.Find("Arduino"))
+        if (arduinodata = GameObject.Find("Arduino"))
+        {
             arduinodata = GameObject.Find("Arduino");
+            arduinodata.GetComponent<SerialS>().btnstate = SerialS.BtnState.none;
+        }
+
 	}
 	
 	// Update is called once per frame
@@ -42,29 +46,33 @@ public class playercar : MonoBehaviour {
        #region
         if (playerdata.bstart)
         {
-            if (Input.GetKeyDown(KeyCode.UpArrow))
+            if (Input.GetKeyDown(KeyCode.UpArrow) || arduinodata.GetComponent<SerialS>().btnstate == SerialS.BtnState.up)
             {
-                rigidbody2D.AddForce(new Vector2(transform.up.x, transform.up.y) * playerdata.Fupspeed);
+                //transform.position += transform.forward * Time.deltaTime *playerdata.Fupspeed;
+                rigidbody2D.AddForce(new Vector2(transform.up.x, transform.up.y) * playerdata.Fspeed *Time.deltaTime);
             }
 
 
-            if (Input.GetKeyDown(KeyCode.DownArrow))
+            if (Input.GetKeyDown(KeyCode.DownArrow) || arduinodata.GetComponent<SerialS>().btnstate == SerialS.BtnState.down)
             {
-                rigidbody2D.AddForce(new Vector2(-transform.up.x, -transform.up.y) * playerdata.Fupspeed);
+                //transform.position -= transform.forward * Time.deltaTime * playerdata.Fupspeed;
+                rigidbody2D.AddForce(new Vector2(-transform.up.x, -transform.up.y) * playerdata.Fspeed *Time.deltaTime);
             }
 
 
-            if (Input.GetKeyDown(KeyCode.LeftArrow))
+            if (Input.GetKeyDown(KeyCode.LeftArrow) || arduinodata.GetComponent<SerialS>().btnstate  == SerialS.BtnState.left)
             {
-                rigidbody2D.AddForce(new Vector2(-transform.right.x, -transform.right.y) * playerdata.Fcurvespeed);
+              //  transform.position -= transform.right * Time.deltaTime * playerdata.Fcurvespeed;
+                rigidbody2D.AddForce(new Vector2(-transform.right.x, -transform.right.y) * playerdata.Fspeed *Time.deltaTime);
             }
 
-            if (Input.GetKeyDown(KeyCode.RightArrow))
+            if (Input.GetKeyDown(KeyCode.RightArrow) || arduinodata.GetComponent<SerialS>().btnstate == SerialS.BtnState.right)
             {
-                rigidbody2D.AddForce(new Vector2(transform.right.x, transform.right.y) * playerdata.Fcurvespeed);
+               // transform.position += transform.right * Time.deltaTime * playerdata.Fcurvespeed;
+                rigidbody2D.AddForce(new Vector2(transform.right.x, transform.right.y) * playerdata.Fspeed *Time.deltaTime);
             }
 
-            if (Input.GetKeyUp(KeyCode.Space))
+            if (Input.GetKeyUp(KeyCode.Space) || arduinodata.GetComponent<SerialS>().byell)
             {
                 Debug.Log("shoot!");
                 GObullettemp = (GameObject)GameObject.Instantiate(GObullet, transform.position, Quaternion.identity);

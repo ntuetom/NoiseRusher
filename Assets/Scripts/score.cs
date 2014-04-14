@@ -20,23 +20,9 @@ public class score : MonoBehaviour {
         //guiText.text = i.ToString();
         if (Input.GetKeyDown(KeyCode.Escape)) {
             Application.LoadLevel(Application.loadedLevel-1);
+    
         }
-        if (icount <= 0)
-        {
-            if (playerdata.bsuccess)
-            {
-                Debug.Log("Good");
-            }
-            else
-            {
-                Debug.Log("Bad");
-            }
-        }
-        else { 
-            if(playerdata.bsuccess){
-                Debug.Log("Good");
-            }
-        }
+        
         
         
 	}
@@ -72,7 +58,37 @@ public class score : MonoBehaviour {
             }
             
         }
+
+        if (icount <= 0)
+        {
+            if (playerdata.bsuccess)
+            {
+                Debug.Log("Good");
+                waittime();
+                Application.LoadLevel(Application.loadedLevel - 1);
+            }
+            else
+            {
+                Debug.Log("Bad");
+                waittime();
+                Application.LoadLevel(Application.loadedLevel - 1);
+            }
+        }
+        else
+        {
+            if (playerdata.bsuccess)
+            {
+                Debug.Log("Good");
+                waittime();
+                Application.LoadLevel(Application.loadedLevel - 1);
+            }
+        }
         
+    }
+
+    IEnumerator waittime() {
+        yield return 0;
+        yield return new WaitForSeconds(3);
     }
 
 }
