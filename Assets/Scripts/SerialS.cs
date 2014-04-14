@@ -13,17 +13,22 @@ public class SerialS : MonoBehaviour {
     public float fx_axis;
     public float fy_axis;
     public float fsound;
+    public float fbtn;
     public string COMPort; //Com Port
     public SerialPort stream;
     public BtnState btnstate;
     public bool byell;
+    public bool bclick;
+    float ftemp=0;
     Thread myThread;
 
 	// Use this for initialization
     void Start()
     {
+        /*stream = new SerialPort(COMPort, 19200);
+        stream.Open();
         btnstate = BtnState.none;
-        //stream.ReadTimeout = 10;
+        //stream.ReadTimeout = 10;*/
         /*try
         {
             stream.Open(); //Open the Serial Stream.
@@ -46,11 +51,12 @@ public class SerialS : MonoBehaviour {
             
             string value = stream.ReadLine(); //Read the information
             string[] vec3 = value.Split(',');
-            if (vec3.Length >= 3)
+            if (vec3.Length >= 4)
             {
                 fx_axis = Convert.ToSingle(vec3[0]);
-                fy_axis = Convert.ToSingle(vec3[2]);
-                fsound = Convert.ToSingle(vec3[1]);
+                fy_axis = Convert.ToSingle(vec3[1]);
+                fsound = Convert.ToSingle(vec3[2]);
+                fbtn = Convert.ToSingle(vec3[3]);
             }
                 
         }
@@ -58,9 +64,29 @@ public class SerialS : MonoBehaviour {
 
     }
 
+    void nothread() {
+        string value = stream.ReadLine(); //Read the information
+        string[] vec3 = value.Split(',');
+        if (vec3.Length >= 4)
+        {
+            fx_axis = Convert.ToSingle(vec3[0]);
+            fy_axis = Convert.ToSingle(vec3[1]);
+            fsound = Convert.ToSingle(vec3[2]);
+            fbtn = Convert.ToSingle(vec3[3]);
+        }
+    
+    }
 	// Update is called once per frame
     void Update()
     {
+        /*if (ftemp < fupdatetime) { 
+            ftemp+=Time.deltaTime;
+        }
+        else{
+            nothread();
+            ftemp = 0;
+        }*/
+
         if (fx_axis >= 600f)
             btnstate = BtnState.up;
         else if (fx_axis <= 400f)
@@ -71,14 +97,16 @@ public class SerialS : MonoBehaviour {
             btnstate = BtnState.left;
         else
             btnstate = BtnState.none;
-        if (fsound > 23f)
+        if (fsound > 42f)
             byell = true;
         else
             byell = false;
-        
-        
+        if (fbtn == 1)
+            bclick = true;
+        else
+            bclick = false;
     }
-
+    /*
     void OnApplicationQuit()
     {
         if (myThread.IsAlive)

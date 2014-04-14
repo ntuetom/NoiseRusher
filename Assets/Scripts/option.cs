@@ -4,14 +4,24 @@ using System.Collections;
 public class option : MonoBehaviour {
 
     public GameObject arduinodata;
+    public GameObject arduinoreal;
     private Vector2 _ScreenSize = new Vector2(Screen.width,Screen.height);
     public Rect[] RectButton;
     public Texture[] texturebtn;
     public bool bStart;
 	// Use this for initialization
+    void Awake() {
+       
+    }
 	void Start () {
-        if (arduinodata = GameObject.Find("Arduino"))
+        if (!GameObject.Find("Arduino"))
+            GameObject.Instantiate(arduinoreal).name = "Arduino";
+        if (GameObject.Find("Arduino"))
             arduinodata = GameObject.Find("Arduino");
+        else {
+            GameObject.Instantiate(arduinoreal).name = "Arduino";
+            arduinodata = GameObject.Find("Arduino");
+        }
         bStart = true;
 	}
 	
@@ -26,9 +36,9 @@ public class option : MonoBehaviour {
         {
             bStart = false;
         }
-        if (Input.GetKeyUp(KeyCode.Space))
+        if (Input.GetKeyUp(KeyCode.Space) || arduinodata.GetComponent<SerialS>().bclick)
             if(!bStart)Application.Quit();
-        if (Input.GetKeyUp(KeyCode.Space))
+        if (Input.GetKeyUp(KeyCode.Space) || arduinodata.GetComponent<SerialS>().bclick)
         {
             if(bStart)Application.LoadLevel(Application.loadedLevel+1);
         }

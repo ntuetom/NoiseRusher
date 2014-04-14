@@ -78,7 +78,7 @@ public class playercar : MonoBehaviour {
                 GObullettemp = (GameObject)GameObject.Instantiate(GObullet, transform.position, Quaternion.identity);
                 GObullettemp.rigidbody2D.velocity = transform.up * playerdata.Fbulletforce;
             }
-            if (Input.GetKeyUp(KeyCode.A) && playerdata.iPower >= 6)
+            if ((Input.GetKeyUp(KeyCode.A) || arduinodata.GetComponent<SerialS>().bclick) && playerdata.iPower >= 6)
             {
                 Debug.Log("A");
                 playerdata.iPower = 0;
