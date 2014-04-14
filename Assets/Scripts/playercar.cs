@@ -18,8 +18,8 @@ public class playercar : MonoBehaviour {
 	void Start () {
 	    fxtranslate = 0;
         fytranslate = 0;
-        GOblock = new GameObject[16];
-        for (int i = 0;i<=15 ; i++) {
+        GOblock = new GameObject[10];
+        for (int i = 0;i<=9 ; i++) {
             if(GameObject.Find("block" + (i + 1)))
                 GOblock[i] = GameObject.Find("block" + (i + 1));
         }
@@ -44,7 +44,7 @@ public class playercar : MonoBehaviour {
         //transform.Translate(fxtranslate, fytranslate, 0);
         //Debug.Log(rigidbody2D.velocity);
        #region
-        if (playerdata.bstart)
+        if (playerdata.bstart && arduinodata)
         {
             if (Input.GetKeyDown(KeyCode.UpArrow) || arduinodata.GetComponent<SerialS>().btnstate == SerialS.BtnState.up)
             {
@@ -88,6 +88,51 @@ public class playercar : MonoBehaviour {
                 bbigweapon = false;
             }
 
+        }
+        else if (playerdata.bstart && !arduinodata) {
+            if (Input.GetKeyDown(KeyCode.UpArrow))
+            {
+                //transform.position += transform.forward * Time.deltaTime *playerdata.Fupspeed;
+                rigidbody2D.AddForce(new Vector2(transform.up.x, transform.up.y) * playerdata.Fkeyspeed * Time.deltaTime);
+            }
+
+
+            if (Input.GetKeyDown(KeyCode.DownArrow) )
+            {
+                //transform.position -= transform.forward * Time.deltaTime * playerdata.Fupspeed;
+                rigidbody2D.AddForce(new Vector2(-transform.up.x, -transform.up.y) * playerdata.Fkeyspeed * Time.deltaTime);
+            }
+
+
+            if (Input.GetKeyDown(KeyCode.LeftArrow) )
+            {
+                //  transform.position -= transform.right * Time.deltaTime * playerdata.Fcurvespeed;
+                rigidbody2D.AddForce(new Vector2(-transform.right.x, -transform.right.y) * playerdata.Fkeyspeed * Time.deltaTime);
+            }
+
+            if (Input.GetKeyDown(KeyCode.RightArrow) )
+            {
+                // transform.position += transform.right * Time.deltaTime * playerdata.Fcurvespeed;
+                rigidbody2D.AddForce(new Vector2(transform.right.x, transform.right.y) * playerdata.Fkeyspeed * Time.deltaTime);
+            }
+
+            if (Input.GetKeyUp(KeyCode.Space) )
+            {
+                Debug.Log("shoot!");
+                GObullettemp = (GameObject)GameObject.Instantiate(GObullet, transform.position, Quaternion.identity);
+                GObullettemp.rigidbody2D.velocity = transform.up * playerdata.Fbulletforce;
+            }
+            if (Input.GetKeyUp(KeyCode.A) && playerdata.iPower >= 6)
+            {
+                Debug.Log("A");
+                playerdata.iPower = 0;
+                bbigweapon = true;
+            }
+            else
+            {
+                bbigweapon = false;
+            }
+        
         }
        #endregion
         if (icount % 2 == 0)

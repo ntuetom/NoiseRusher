@@ -40,11 +40,15 @@ public class score : MonoBehaviour {
             }
             if (playerdata.bstart && icount>=0)
             {
+                if (audio.isPlaying)
+                    audio.volume -= Time.deltaTime;
                 GUI.DrawTexture(rect[0], Z2N[(int)icount / 10]);
                 GUI.DrawTexture(rect[1], Z2N[(int)icount % 10]);
             }
             else
             {
+                if (!audio.isPlaying)
+                    audio.Play();
                 if ((int)(icount % 10) == 3)
                 {
                     GUI.DrawTexture(rect[2], Z2N[12]);

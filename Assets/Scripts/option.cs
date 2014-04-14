@@ -3,6 +3,8 @@ using System.Collections;
 
 public class option : MonoBehaviour {
 
+    public AudioClip check;
+    public bool barduino;
     public GameObject arduinodata;
     public GameObject arduinoreal;
     private Vector2 _ScreenSize = new Vector2(Screen.width,Screen.height);
@@ -10,37 +12,74 @@ public class option : MonoBehaviour {
     public Texture[] texturebtn;
     public bool bStart;
 	// Use this for initialization
-    void Awake() {
-       
-    }
+  
 	void Start () {
-        if (!GameObject.Find("Arduino"))
-            GameObject.Instantiate(arduinoreal).name = "Arduino";
-        if (GameObject.Find("Arduino"))
-            arduinodata = GameObject.Find("Arduino");
-        else {
-            GameObject.Instantiate(arduinoreal).name = "Arduino";
-            arduinodata = GameObject.Find("Arduino");
+        if (barduino)
+        {
+            if (!GameObject.Find("Arduino"))
+            {
+                GameObject.Instantiate(arduinoreal).name = "Arduino";
+                arduinodata = GameObject.Find("Arduino");
+            }
+            else
+                arduinodata = GameObject.Find("Arduino");
         }
         bStart = true;
 	}
 	
 	// Update is called once per frame
 	void Update () {
+        if (barduino)
+        {
+            if (Input.GetKeyDown(KeyCode.UpArrow) || arduinodata.GetComponent<SerialS>().btnstate == SerialS.BtnState.up)
+            {
+                
+                audio.Play();
+                bStart = true;
+            }
+            if (Input.GetKeyDown(KeyCode.DownArrow) || arduinodata.GetComponent<SerialS>().btnstate == SerialS.BtnState.down)
+            {
+                
+                audio.Play();
+                bStart = false;
+            }
+            if (Input.GetKeyUp(KeyCode.Space) || arduinodata.GetComponent<SerialS>().bclick)
+            {
+                audio.clip = check;
+                audio.Play();
+                if (!bStart) Application.Quit();
+            }
+            if (Input.GetKeyUp(KeyCode.Space) || arduinodata.GetComponent<SerialS>().bclick)
+            {
+                audio.clip = check;
+                audio.Play();
+                if (bStart) Application.LoadLevel(Application.loadedLevel + 1);
+            }
+        }
+        else {
+            if (Input.GetKeyDown(KeyCode.UpArrow) )
+            {
+                audio.Play();
+                bStart = true;
+            }
+            if (Input.GetKeyDown(KeyCode.DownArrow) )
+            {
+                audio.Play();
+                bStart = false;
+            }
+            if (Input.GetKeyUp(KeyCode.Space))
+            {
+                audio.clip = check;
+                audio.Play();
+                if (!bStart) Application.Quit();
+            }
+            if (Input.GetKeyUp(KeyCode.Space) )
+            {
+                audio.clip = check;
+                audio.Play();
+                if (bStart) Application.LoadLevel(Application.loadedLevel + 1);
+            }
         
-        if (Input.GetKeyDown(KeyCode.UpArrow) || arduinodata.GetComponent<SerialS>().btnstate == SerialS.BtnState.up)
-        {
-            bStart = true;
-        }
-        if (Input.GetKeyDown(KeyCode.DownArrow) || arduinodata.GetComponent<SerialS>().btnstate == SerialS.BtnState.down)
-        {
-            bStart = false;
-        }
-        if (Input.GetKeyUp(KeyCode.Space) || arduinodata.GetComponent<SerialS>().bclick)
-            if(!bStart)Application.Quit();
-        if (Input.GetKeyUp(KeyCode.Space) || arduinodata.GetComponent<SerialS>().bclick)
-        {
-            if(bStart)Application.LoadLevel(Application.loadedLevel+1);
         }
 	}
 
