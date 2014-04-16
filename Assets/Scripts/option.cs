@@ -33,26 +33,25 @@ public class option : MonoBehaviour {
         {
             if (Input.GetKeyDown(KeyCode.UpArrow) || arduinodata.GetComponent<SerialS>().btnstate == SerialS.BtnState.up)
             {
-                
-                audio.Play();
+                if (!audio.isPlaying)
+                    audio.Play();
                 bStart = true;
             }
             if (Input.GetKeyDown(KeyCode.DownArrow) || arduinodata.GetComponent<SerialS>().btnstate == SerialS.BtnState.down)
             {
-                
-                audio.Play();
+
+                if (!audio.isPlaying)
+                    audio.Play();
                 bStart = false;
             }
             if (Input.GetKeyUp(KeyCode.Space) || arduinodata.GetComponent<SerialS>().bclick)
             {
-                audio.clip = check;
-                audio.Play();
+                audio.PlayOneShot(check);
                 if (!bStart) Application.Quit();
             }
             if (Input.GetKeyUp(KeyCode.Space) || arduinodata.GetComponent<SerialS>().bclick)
             {
-                audio.clip = check;
-                audio.Play();
+                audio.PlayOneShot(check);
                 if (bStart) Application.LoadLevel(Application.loadedLevel + 1);
             }
         }

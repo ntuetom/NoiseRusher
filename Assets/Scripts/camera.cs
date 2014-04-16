@@ -24,8 +24,8 @@ public class camera : MonoBehaviour {
             //向後開
             if (target.GetComponent<playercar>().icount == 2 || target.GetComponent<playercar>().icount == 10)
                 transform.position = new Vector3(transform.position.x, target.transform.position.y - 5F, transform.position.z);
-                //向前開
-            else
+            //向前開
+            else               
                 transform.position = new Vector3(transform.position.x, target.transform.position.y + 5F, transform.position.z);
             transform.rotation = Quaternion.Slerp(transform.rotation, target.transform.rotation, Time.deltaTime * playerdata.FCamerafellowspeed);
         }

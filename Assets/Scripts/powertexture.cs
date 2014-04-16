@@ -4,6 +4,7 @@ using System.Collections;
 public class powertexture : MonoBehaviour {
 
     private Vector2 _ScreenSize = new Vector2(Screen.width, Screen.height);
+    public GameObject arduinodata;
     public Texture power;
     public Texture energy;
     public Rect powerrect;
@@ -13,6 +14,10 @@ public class powertexture : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         playerdata.iPower = 0;
+        if (arduinodata = GameObject.Find("Arduino"))
+        {
+            arduinodata = GameObject.Find("Arduino");
+        }
 	}
 	
 	// Update is called once per frame
@@ -26,11 +31,22 @@ public class powertexture : MonoBehaviour {
            
             ftemptime = 0;
         }
-        if ((playercar.bcollider || playercar.V2carspeed == Vector2.zero )  && playerdata.iPower > 0 && !bistop)
+        //扣能量
+        if (!arduinodata)
         {
-            playerdata.iPower--;
+            if ((playercar.bcollider) && playerdata.iPower > 0 && !bistop)
+            {
+                playerdata.iPower--;
+            }
         }
+        else {
+            if ((playercar.bcollider || playercar.V2carspeed==Vector2.zero) && playerdata.iPower > 0 && !bistop)
+            {
+                playerdata.iPower--;
+            }
         
+        }
+
         if (playercar.V2carspeed != Vector2.zero)
         {
             bistop = false;
@@ -39,7 +55,7 @@ public class powertexture : MonoBehaviour {
     void OnGUI() {
         GUI.color = Color.red;
         Rect rect = new Rect((powerrect.x+0.02f) * _ScreenSize.x
-                              , (powerrect.y+0.495f) * _ScreenSize.y
+                              , (powerrect.y+0.493f) * _ScreenSize.y
                               , powerrect.width/2 * _ScreenSize.x
                               , (-powerrect.height / 6.5f) * playerdata.iPower * _ScreenSize.y);
         GUI.DrawTexture(rect, energy);

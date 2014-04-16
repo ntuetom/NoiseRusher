@@ -11,20 +11,7 @@ Platform assembly: C:\Users\user\Documents\Github\NoiseRusher\NR_Data\Managed\Un
 Loading C:\Users\user\Documents\Github\NoiseRusher\NR_Data\Managed\UnityEngine.dll into Unity Child Domain
 Platform assembly: C:\Users\user\Documents\Github\NoiseRusher\NR_Data\Managed\Assembly-CSharp.dll (this message is harmless)
 Loading C:\Users\user\Documents\Github\NoiseRusher\NR_Data\Managed\Assembly-CSharp.dll into Unity Child Domain
-- Completed reload, in  0.046 seconds
+- Completed reload, in  0.045 seconds
 desktop: 1440x900 75Hz; virtual: 1440x900 at 0,0
 <RI> Initializing input.
 <RI> Input initialized.
-Platform assembly: C:\Users\user\Documents\Github\NoiseRusher\NR_Data\Managed\System.dll (this message is harmless)
-UnloadTime: 0.407671 ms
-Unloading 4 Unused Serialized files (Serialized files now loaded: 0 / Dirty serialized files: 0)
-
-Unloading 8 unused Assets to reduce memory usage. Loaded Objects now: 455.
-Total: 1.548126 ms (FindLiveObjects: 0.029119 ms CreateObjectMapping: 0.014079 ms MarkObjects: 0.205755 ms  DeleteObjects: 0.021439 ms)
-
-UnloadTime: 0.750383 ms
-Unloading 1 Unused Serialized files (Serialized files now loaded: 0 / Dirty serialized files: 0)
-
-Unloading 45 unused Assets to reduce memory usage. Loaded Objects now: 112.
-Total: 1.502367 ms (FindLiveObjects: 0.010559 ms CreateObjectMapping: 0.012159 ms MarkObjects: 0.159356 ms  DeleteObjects: 0.080318 ms)
-

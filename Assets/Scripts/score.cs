@@ -5,12 +5,17 @@ public class score : MonoBehaviour {
 
     private Vector2 _ScreenSize = new Vector2(Screen.width, Screen.height);
     public Rect[] RectNum;
+    public Rect RectEnd;
     public Texture[] Z2N;
+    public Texture[] endpic;
     float icount;
+    float ftemp;
 	// Use this for initialization
 	void Start () {
+        ftemp = 0;
         icount = 64;
         playerdata.bstart = false;
+        playerdata.bsuccess = false;
 	}
 	
 	// Update is called once per frame
@@ -27,6 +32,7 @@ public class score : MonoBehaviour {
         
 	}
     void OnGUI() {
+        Rect rectend = new Rect(0, 0, RectEnd.width * _ScreenSize.x, RectEnd.height * _ScreenSize.y);  
         Rect[] rect = new Rect[RectNum.Length];
         if (Z2N.Length >= 10 && RectNum.Length >= 2)
         {
@@ -68,14 +74,16 @@ public class score : MonoBehaviour {
             if (playerdata.bsuccess)
             {
                 Debug.Log("Good");
-                waittime();
-                Application.LoadLevel(Application.loadedLevel - 1);
+                GUI.DrawTexture(rectend,endpic[1]);
+                StartCoroutine(waittime());
+               // Application.LoadLevel(Application.loadedLevel - 1);
             }
             else
             {
                 Debug.Log("Bad");
-                waittime();
-                Application.LoadLevel(Application.loadedLevel - 1);
+                GUI.DrawTexture(rectend, endpic[0]);
+                StartCoroutine(waittime());
+               // Application.LoadLevel(Application.loadedLevel - 1);
             }
         }
         else
@@ -83,16 +91,21 @@ public class score : MonoBehaviour {
             if (playerdata.bsuccess)
             {
                 Debug.Log("Good");
-                waittime();
-                Application.LoadLevel(Application.loadedLevel - 1);
+                GUI.DrawTexture(rectend, endpic[1]);
+                StartCoroutine(waittime());
+                /*if (ftemp >= 5f)
+                    Application.LoadLevel(Application.loadedLevel - 1);
+                else
+                    ftemp += Time.deltaTime;*/
             }
         }
-        
+       // GUI.DrawTexture(rectend , endpic[1] );
     }
 
     IEnumerator waittime() {
         yield return 0;
-        yield return new WaitForSeconds(3);
+        yield return new WaitForSeconds(5);
+        Application.LoadLevel(Application.loadedLevel - 1);
     }
 
 }

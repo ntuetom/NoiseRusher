@@ -9,7 +9,7 @@ public class SerialS : MonoBehaviour {
     {
         up,down,left,right,none
     };
-    public float fupdatetime;
+    public float fsoundupdatetime;
     public float fx_axis;
     public float fy_axis;
     public float fsound;
@@ -19,15 +19,16 @@ public class SerialS : MonoBehaviour {
     public BtnState btnstate;
     public bool byell;
     public bool bclick;
-    float ftemp=0;
+    float ftemp=0,ftempsound;
     Thread myThread;
 
 	// Use this for initialization
     void Start()
     {
-        /*stream = new SerialPort(COMPort, 19200);
-        stream.Open();
         btnstate = BtnState.none;
+        /*stream = new SerialPort(COMPort, 58400);
+        stream.Open();
+        stream.ReadTimeout = 1;
         //stream.ReadTimeout = 10;*/
         /*try
         {
@@ -86,10 +87,10 @@ public class SerialS : MonoBehaviour {
             nothread();
             ftemp = 0;
         }*/
-
+        //nothread();
         if (fx_axis >= 600f)
             btnstate = BtnState.up;
-        else if (fx_axis <= 400f)
+        else if (fx_axis <= 400f && fx_axis!=0)
             btnstate = BtnState.down;
         else if (fy_axis >= 600f)
             btnstate = BtnState.right;
@@ -97,16 +98,31 @@ public class SerialS : MonoBehaviour {
             btnstate = BtnState.left;
         else
             btnstate = BtnState.none;
-        if (fsound > 42f)
+        //判斷聲音
+        
+        if (fsound >= ftempsound+4f)
             byell = true;
         else
             byell = false;
+   
         if (fbtn == 1)
             bclick = true;
         else
             bclick = false;
+        //Debug.Log(fsound+" "+ftempsound);
     }
-    /*
+    void LateUpdate() {
+        if (ftemp <= fsoundupdatetime)
+        {
+            ftemp += Time.deltaTime;
+        }
+        else {
+            ftempsound = fsound;
+            ftemp = 0;
+        }
+        
+    }
+    
     void OnApplicationQuit()
     {
         if (myThread.IsAlive)

@@ -13,6 +13,10 @@ public class playercar : MonoBehaviour {
     public static Vector2 V2carspeed;
     public static bool bcollider;
     public static bool bbigweapon;
+    Sprite SpriteOri;
+    public GameObject effect;
+    public GameObject shotlight;
+    public Sprite carlight;
 	// Use this for initialization
    
 	void Start () {
@@ -32,12 +36,13 @@ public class playercar : MonoBehaviour {
             arduinodata = GameObject.Find("Arduino");
             arduinodata.GetComponent<SerialS>().btnstate = SerialS.BtnState.none;
         }
-
+        SpriteOri = gameObject.GetComponent<SpriteRenderer>().sprite;
 	}
 	
 	// Update is called once per frame
     void Update()
     {
+        
         V2carspeed = this.rigidbody2D.velocity;
         /*fxtranslate = Input.GetAxis("Horizontal") * playerdata.FHorizontalspeed*Time.deltaTime;
         fytranslate = Input.GetAxis("Vertical") * playerdata.FVerticalspeed*Time.deltaTime;*/
@@ -81,6 +86,8 @@ public class playercar : MonoBehaviour {
             if ((Input.GetKeyUp(KeyCode.A) || arduinodata.GetComponent<SerialS>().bclick) && playerdata.iPower >= 6)
             {
                 Debug.Log("A");
+                shotlight.SetActive(true);
+                StartCoroutine(casttime());
                 playerdata.iPower = 0;
                 bbigweapon = true;
             }
@@ -125,6 +132,8 @@ public class playercar : MonoBehaviour {
             if (Input.GetKeyUp(KeyCode.A) && playerdata.iPower >= 6)
             {
                 Debug.Log("A");
+                shotlight.SetActive(true);
+                StartCoroutine(casttime());
                 playerdata.iPower = 0;
                 bbigweapon = true;
             }
@@ -135,6 +144,7 @@ public class playercar : MonoBehaviour {
         
         }
        #endregion
+
         if (icount % 2 == 0)
         {
             roadstate = playerdata.Roadstate.vertical;
@@ -143,18 +153,36 @@ public class playercar : MonoBehaviour {
         {
             roadstate = playerdata.Roadstate.Horizon;
         }
+
+        /*if (playerdata.iPower <=2)
+        {
+            gameObject.GetComponent<SpriteRenderer>().sprite = Sprite.Create(carlight.texture, SpriteOri.rect, Vector2.zero);
+        }
+        else {
+            gameObject.GetComponent<SpriteRenderer>().sprite = SpriteOri;
+        }*/
+        if (playerdata.iPower >= 6f)
+        {
+            effect.SetActive(true);
+        }
+        else {
+            effect.SetActive(false);
+        }
+     
     }
 
     void OnTriggerEnter2D(Collider2D col){
         switch(col.tag){
             case "SL":
                 icount++;
+                //rigidbody2D.velocity = Vector2.zero;
                 transform.Rotate(Vector3.forward, 90f);
                 Destroy(col.gameObject);
                 GOblock[icount-1].collider2D.isTrigger = false;
                 break;
             case "SR":
                 icount++;
+                //rigidbody2D.velocity = Vector2.zero;
                 transform.Rotate(Vector3.forward, -90f);
                 Destroy(col.gameObject);
                 GOblock[icount-1].collider2D.isTrigger = false;
@@ -176,6 +204,13 @@ public class playercar : MonoBehaviour {
                 bcollider = false;
                 break;
         }
+    }
+
+    IEnumerator casttime()
+    {
+        yield return 0;
+        yield return new WaitForSeconds(3);
+        shotlight.SetActive(false);
     }
 
 }
