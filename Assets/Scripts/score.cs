@@ -42,7 +42,7 @@ public class score : MonoBehaviour {
                 rect[i] = new Rect(RectNum[i].x * _ScreenSize.x
                           , RectNum[i].y * _ScreenSize.y
                           , RectNum[i].width * _ScreenSize.x
-                          , RectNum[i].height * _ScreenSize.y);
+                          , RectNum[i].height * _ScreenSize.x);
             }
             if (playerdata.bstart && icount>=0)
             {

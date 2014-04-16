@@ -80,7 +80,7 @@ public class playercar : MonoBehaviour {
             if (Input.GetKeyUp(KeyCode.Space) || arduinodata.GetComponent<SerialS>().byell)
             {
                 Debug.Log("shoot!");
-                GObullettemp = (GameObject)GameObject.Instantiate(GObullet, transform.position, Quaternion.identity);
+                GObullettemp = (GameObject)GameObject.Instantiate(GObullet, transform.position, transform.rotation);
                 GObullettemp.rigidbody2D.velocity = transform.up * playerdata.Fbulletforce;
             }
             if ((Input.GetKeyUp(KeyCode.A) || arduinodata.GetComponent<SerialS>().bclick) && playerdata.iPower >= 6)
@@ -126,7 +126,7 @@ public class playercar : MonoBehaviour {
             if (Input.GetKeyUp(KeyCode.Space) )
             {
                 Debug.Log("shoot!");
-                GObullettemp = (GameObject)GameObject.Instantiate(GObullet, transform.position, Quaternion.identity);
+                GObullettemp = (GameObject)GameObject.Instantiate(GObullet, transform.position, transform.rotation);
                 GObullettemp.rigidbody2D.velocity = transform.up * playerdata.Fbulletforce;
             }
             if (Input.GetKeyUp(KeyCode.A) && playerdata.iPower >= 6)
