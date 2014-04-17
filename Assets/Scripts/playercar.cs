@@ -3,6 +3,8 @@ using System.Collections;
 
 public class playercar : MonoBehaviour {
 
+    public AudioClip beep;
+    public GameObject[] stoplight;
     public GameObject[] tire;
     public GameObject arduinodata;
     public GameObject[] GOblock;
@@ -16,7 +18,6 @@ public class playercar : MonoBehaviour {
     public static bool bbigweapon;
     Sprite SpriteOri;
     public GameObject effect;
-    public GameObject shotlight;
     public Sprite carlight;
     float ftiredegree =20;
 	// Use this for initialization
@@ -64,6 +65,9 @@ public class playercar : MonoBehaviour {
             {
                 //transform.position -= transform.forward * Time.deltaTime * playerdata.Fupspeed;
                 rigidbody2D.AddForce(new Vector2(-transform.up.x, -transform.up.y) * playerdata.Fspeed *Time.deltaTime);
+                stoplight[0].SetActive(true);
+                stoplight[1].SetActive(true);
+                StartCoroutine(stoplighttime());
             }
 
 
@@ -132,6 +136,7 @@ public class playercar : MonoBehaviour {
             if ((Input.GetKeyUp(KeyCode.A) || arduinodata.GetComponent<SerialS>().bclick) && playerdata.iPower >= 6)
             {
                 Debug.Log("A");
+                audio.PlayOneShot(beep);
                 GObullettemp = (GameObject)GameObject.Instantiate(GObullet, transform.position, Quaternion.Euler(0, 0, 0));
                 GObullettemp.rigidbody2D.velocity = transform.up * playerdata.Fbulletforce;
                 GObullettemp = (GameObject)GameObject.Instantiate(GObullet, transform.position, Quaternion.Euler(0, 0, 180F));
@@ -170,6 +175,9 @@ public class playercar : MonoBehaviour {
             {
                 //transform.position -= transform.forward * Time.deltaTime * playerdata.Fupspeed;
                 rigidbody2D.AddForce(new Vector2(-transform.up.x, -transform.up.y) * playerdata.Fkeyspeed * Time.deltaTime);
+                stoplight[0].SetActive(true);
+                stoplight[1].SetActive(true);
+                StartCoroutine(stoplighttime());
             }
 
 
@@ -217,6 +225,7 @@ public class playercar : MonoBehaviour {
             if (Input.GetKeyUp(KeyCode.A) && playerdata.iPower >= 6)
             {
                 Debug.Log("A");
+                audio.PlayOneShot(beep);
                 GObullettemp = (GameObject)GameObject.Instantiate(GObullet, transform.position, Quaternion.Euler(0, 0, 0));
                 GObullettemp.rigidbody2D.velocity = transform.up * playerdata.Fbulletforce;
                 GObullettemp = (GameObject)GameObject.Instantiate(GObullet, transform.position, Quaternion.Euler(0, 0, 180F));
@@ -233,8 +242,6 @@ public class playercar : MonoBehaviour {
                 GObullettemp.rigidbody2D.velocity = (-transform.up + transform.right) * playerdata.Fbulletforce;
                 GObullettemp = (GameObject)GameObject.Instantiate(GObullet, transform.position, Quaternion.Euler(0, 0, 315F));
                 GObullettemp.rigidbody2D.velocity = (transform.up + transform.right) * playerdata.Fbulletforce;
-                //shotlight.SetActive(true);
-                //StartCoroutine(casttime());
                 playerdata.iPower = 0;
                 bbigweapon = true;
             }
@@ -242,7 +249,7 @@ public class playercar : MonoBehaviour {
             {
                 bbigweapon = false;
             }
-          
+        
         }
        #endregion
 
@@ -255,13 +262,7 @@ public class playercar : MonoBehaviour {
             roadstate = playerdata.Roadstate.Horizon;
         }
 
-        /*if (playerdata.iPower <=2)
-        {
-            gameObject.GetComponent<SpriteRenderer>().sprite = Sprite.Create(carlight.texture, SpriteOri.rect, Vector2.zero);
-        }
-        else {
-            gameObject.GetComponent<SpriteRenderer>().sprite = SpriteOri;
-        }*/
+       
         if (playerdata.iPower >= 6f)
         {
             effect.SetActive(true);
@@ -307,11 +308,12 @@ public class playercar : MonoBehaviour {
         }
     }
 
-    IEnumerator casttime()
+    IEnumerator stoplighttime()
     {
         yield return 0;
-        yield return new WaitForSeconds(3);
-        shotlight.SetActive(false);
+        yield return new WaitForSeconds(1);
+        stoplight[0].SetActive(false);
+        stoplight[1].SetActive(false);
     }
 
 }
