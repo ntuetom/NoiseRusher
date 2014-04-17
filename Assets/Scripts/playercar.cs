@@ -3,6 +3,7 @@ using System.Collections;
 
 public class playercar : MonoBehaviour {
 
+    public GameObject[] tire;
     public GameObject arduinodata;
     public GameObject[] GOblock;
     public GameObject GObullet;
@@ -17,6 +18,7 @@ public class playercar : MonoBehaviour {
     public GameObject effect;
     public GameObject shotlight;
     public Sprite carlight;
+    float ftiredegree =20;
 	// Use this for initialization
    
 	void Start () {
@@ -68,13 +70,57 @@ public class playercar : MonoBehaviour {
             if (Input.GetKeyDown(KeyCode.LeftArrow) || arduinodata.GetComponent<SerialS>().btnstate  == SerialS.BtnState.left)
             {
               //  transform.position -= transform.right * Time.deltaTime * playerdata.Fcurvespeed;
+                //tire[0]是左輪
+               
+                tire[0].transform.rotation = Quaternion.Euler(0, 0,transform.eulerAngles.z+ftiredegree);
+                tire[1].transform.rotation = Quaternion.Euler(0, 0,transform.eulerAngles.z+ftiredegree);
                 rigidbody2D.AddForce(new Vector2(-transform.right.x, -transform.right.y) * playerdata.Fspeed *Time.deltaTime);
+                transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(new Vector3(0, 0, transform.rotation.eulerAngles.z + 20f)), Time.deltaTime*5f);
             }
 
             if (Input.GetKeyDown(KeyCode.RightArrow) || arduinodata.GetComponent<SerialS>().btnstate == SerialS.BtnState.right)
             {
                // transform.position += transform.right * Time.deltaTime * playerdata.Fcurvespeed;
+                tire[0].transform.rotation = Quaternion.Euler(0, 0, transform.eulerAngles.z - ftiredegree);
+                tire[1].transform.rotation = Quaternion.Euler(0, 0, transform.eulerAngles.z - ftiredegree);
                 rigidbody2D.AddForce(new Vector2(transform.right.x, transform.right.y) * playerdata.Fspeed *Time.deltaTime);
+                transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(new Vector3(0, 0, transform.rotation.eulerAngles.z - 20f)), Time.deltaTime*5f);
+            }
+
+
+            if (arduinodata.GetComponent<SerialS>().btnstate == SerialS.BtnState.UR) {
+                tire[0].transform.rotation = Quaternion.Euler(0, 0, transform.eulerAngles.z - ftiredegree);
+                tire[1].transform.rotation = Quaternion.Euler(0, 0, transform.eulerAngles.z - ftiredegree);
+                rigidbody2D.AddForce((transform.up+transform.right) * playerdata.Fspeed *Time.deltaTime);
+                transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(new Vector3(0, 0, transform.rotation.eulerAngles.z - 20f)), Time.deltaTime*2.5f);
+            }
+
+            if (arduinodata.GetComponent<SerialS>().btnstate == SerialS.BtnState.UL)
+            {
+                tire[0].transform.rotation = Quaternion.Euler(0, 0, transform.eulerAngles.z + ftiredegree);
+                tire[1].transform.rotation = Quaternion.Euler(0, 0, transform.eulerAngles.z + ftiredegree);
+                rigidbody2D.AddForce((transform.up-transform.right) * playerdata.Fspeed * Time.deltaTime);
+                transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(new Vector3(0, 0, transform.rotation.eulerAngles.z + 20f)), Time.deltaTime * 2.5f);
+            }
+            if (arduinodata.GetComponent<SerialS>().btnstate == SerialS.BtnState.DR)
+            {
+                tire[0].transform.rotation = Quaternion.Euler(0, 0, transform.eulerAngles.z - ftiredegree);
+                tire[1].transform.rotation = Quaternion.Euler(0, 0, transform.eulerAngles.z - ftiredegree);
+                rigidbody2D.AddForce((-transform.up+transform.right) * playerdata.Fspeed * Time.deltaTime);
+                transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(new Vector3(0, 0, transform.rotation.eulerAngles.z - 20f)), Time.deltaTime * 2.5f);
+            }
+            if (arduinodata.GetComponent<SerialS>().btnstate == SerialS.BtnState.DL)
+            {
+                tire[0].transform.rotation = Quaternion.Euler(0, 0, transform.eulerAngles.z + ftiredegree);
+                tire[1].transform.rotation = Quaternion.Euler(0, 0, transform.eulerAngles.z + ftiredegree);
+                rigidbody2D.AddForce(-(transform.up+transform.right) * playerdata.Fspeed * Time.deltaTime);
+                transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(new Vector3(0, 0, transform.rotation.eulerAngles.z + 20f)), Time.deltaTime * 2.5f);
+            }
+            
+            //輪胎恢復
+            if (arduinodata.GetComponent<SerialS>().btnstate == SerialS.BtnState.none) {
+                tire[0].transform.rotation = Quaternion.Euler(0, 0, transform.rotation.eulerAngles.z);
+                tire[1].transform.rotation = Quaternion.Euler(0, 0, transform.rotation.eulerAngles.z);
             }
 
             if (Input.GetKeyUp(KeyCode.Space) || arduinodata.GetComponent<SerialS>().byell)
@@ -86,8 +132,24 @@ public class playercar : MonoBehaviour {
             if ((Input.GetKeyUp(KeyCode.A) || arduinodata.GetComponent<SerialS>().bclick) && playerdata.iPower >= 6)
             {
                 Debug.Log("A");
-                shotlight.SetActive(true);
-                StartCoroutine(casttime());
+                GObullettemp = (GameObject)GameObject.Instantiate(GObullet, transform.position, Quaternion.Euler(0, 0, 0));
+                GObullettemp.rigidbody2D.velocity = transform.up * playerdata.Fbulletforce;
+                GObullettemp = (GameObject)GameObject.Instantiate(GObullet, transform.position, Quaternion.Euler(0, 0, 180F));
+                GObullettemp.rigidbody2D.velocity = -transform.up * playerdata.Fbulletforce;
+                GObullettemp = (GameObject)GameObject.Instantiate(GObullet, transform.position, Quaternion.Euler(0, 0, 270F));
+                GObullettemp.rigidbody2D.velocity = transform.right * playerdata.Fbulletforce;
+                GObullettemp = (GameObject)GameObject.Instantiate(GObullet, transform.position, Quaternion.Euler(0, 0, 90F));
+                GObullettemp.rigidbody2D.velocity = -transform.right * playerdata.Fbulletforce;
+                GObullettemp = (GameObject)GameObject.Instantiate(GObullet, transform.position, Quaternion.Euler(0, 0, 45F));
+                GObullettemp.rigidbody2D.velocity = (transform.up - transform.right) * playerdata.Fbulletforce;
+                GObullettemp = (GameObject)GameObject.Instantiate(GObullet, transform.position, Quaternion.Euler(0, 0, 135F));
+                GObullettemp.rigidbody2D.velocity = (-transform.up - transform.right) * playerdata.Fbulletforce;
+                GObullettemp = (GameObject)GameObject.Instantiate(GObullet, transform.position, Quaternion.Euler(0, 0, 225F));
+                GObullettemp.rigidbody2D.velocity = (-transform.up + transform.right) * playerdata.Fbulletforce;
+                GObullettemp = (GameObject)GameObject.Instantiate(GObullet, transform.position, Quaternion.Euler(0, 0, 315F));
+                GObullettemp.rigidbody2D.velocity = (transform.up + transform.right) * playerdata.Fbulletforce;
+                //shotlight.SetActive(true);
+                //StartCoroutine(casttime());
                 playerdata.iPower = 0;
                 bbigweapon = true;
             }
@@ -113,14 +175,37 @@ public class playercar : MonoBehaviour {
 
             if (Input.GetKeyDown(KeyCode.LeftArrow) )
             {
-                //  transform.position -= transform.right * Time.deltaTime * playerdata.Fcurvespeed;
+
+                tire[0].transform.Rotate(Vector3.forward, ftiredegree);
+                tire[1].transform.Rotate(Vector3.forward, ftiredegree);
+                
+                
+                //transform.position -= transform.right * Time.deltaTime * playerdata.Fcurvespeed;
                 rigidbody2D.AddForce(new Vector2(-transform.right.x, -transform.right.y) * playerdata.Fkeyspeed * Time.deltaTime);
+                transform.rotation = Quaternion.Slerp(transform.rotation,Quaternion.Euler(new Vector3 (0,0,transform.rotation.eulerAngles.z + 20f)),Time.deltaTime*100f);
+            }
+            if(Input.GetKeyUp(KeyCode.LeftArrow))
+            {
+                tire[0].transform.rotation = Quaternion.Euler(0, 0, transform.rotation.eulerAngles.z);
+                tire[1].transform.rotation = Quaternion.Euler(0, 0, transform.rotation.eulerAngles.z);
             }
 
             if (Input.GetKeyDown(KeyCode.RightArrow) )
             {
-                // transform.position += transform.right * Time.deltaTime * playerdata.Fcurvespeed;
+
+                tire[0].transform.Rotate(Vector3.forward, -ftiredegree);
+                tire[1].transform.Rotate(Vector3.forward, -ftiredegree);
+                
+                
+                //transform.position += transform.right * Time.deltaTime * playerdata.Fcurvespeed;
                 rigidbody2D.AddForce(new Vector2(transform.right.x, transform.right.y) * playerdata.Fkeyspeed * Time.deltaTime);
+                transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(new Vector3(0, 0, transform.rotation.eulerAngles.z - 20f)), Time.deltaTime*100f);
+            }
+            //輪胎回復
+            if (Input.GetKeyUp(KeyCode.RightArrow))
+            {
+                tire[0].transform.rotation = Quaternion.Euler(0, 0, transform.rotation.eulerAngles.z);
+                tire[1].transform.rotation = Quaternion.Euler(0, 0, transform.rotation.eulerAngles.z);
             }
 
             if (Input.GetKeyUp(KeyCode.Space) )
@@ -132,8 +217,24 @@ public class playercar : MonoBehaviour {
             if (Input.GetKeyUp(KeyCode.A) && playerdata.iPower >= 6)
             {
                 Debug.Log("A");
-                shotlight.SetActive(true);
-                StartCoroutine(casttime());
+                GObullettemp = (GameObject)GameObject.Instantiate(GObullet, transform.position, Quaternion.Euler(0, 0, 0));
+                GObullettemp.rigidbody2D.velocity = transform.up * playerdata.Fbulletforce;
+                GObullettemp = (GameObject)GameObject.Instantiate(GObullet, transform.position, Quaternion.Euler(0, 0, 180F));
+                GObullettemp.rigidbody2D.velocity = -transform.up * playerdata.Fbulletforce;
+                GObullettemp = (GameObject)GameObject.Instantiate(GObullet, transform.position, Quaternion.Euler(0, 0, 270F));
+                GObullettemp.rigidbody2D.velocity = transform.right * playerdata.Fbulletforce;
+                GObullettemp = (GameObject)GameObject.Instantiate(GObullet, transform.position, Quaternion.Euler(0, 0, 90F));
+                GObullettemp.rigidbody2D.velocity = -transform.right * playerdata.Fbulletforce;
+                GObullettemp = (GameObject)GameObject.Instantiate(GObullet, transform.position, Quaternion.Euler(0, 0, 45F));
+                GObullettemp.rigidbody2D.velocity = (transform.up - transform.right) * playerdata.Fbulletforce;
+                GObullettemp = (GameObject)GameObject.Instantiate(GObullet, transform.position, Quaternion.Euler(0, 0, 135F));
+                GObullettemp.rigidbody2D.velocity = (-transform.up - transform.right) * playerdata.Fbulletforce;
+                GObullettemp = (GameObject)GameObject.Instantiate(GObullet, transform.position, Quaternion.Euler(0, 0, 225F));
+                GObullettemp.rigidbody2D.velocity = (-transform.up + transform.right) * playerdata.Fbulletforce;
+                GObullettemp = (GameObject)GameObject.Instantiate(GObullet, transform.position, Quaternion.Euler(0, 0, 315F));
+                GObullettemp.rigidbody2D.velocity = (transform.up + transform.right) * playerdata.Fbulletforce;
+                //shotlight.SetActive(true);
+                //StartCoroutine(casttime());
                 playerdata.iPower = 0;
                 bbigweapon = true;
             }
@@ -141,7 +242,7 @@ public class playercar : MonoBehaviour {
             {
                 bbigweapon = false;
             }
-        
+          
         }
        #endregion
 

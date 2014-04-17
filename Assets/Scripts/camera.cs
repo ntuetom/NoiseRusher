@@ -14,12 +14,14 @@ public class camera : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        
-       
-        
+
+
+        if (playerdata.bstart && !audio.isPlaying) {
+            audio.Play();
+        }
         //transform.position = Vector3.MoveTowards(transform.position, new Vector3(target.position.x, target.position.y, transform.position.z), Time.deltaTime * playerdata.FCamerafellowspeed);
         //if(target.position.y>=-5)
-        if (playercar.roadstate == playerdata.Roadstate.vertical)
+       /* if (playercar.roadstate == playerdata.Roadstate.vertical)
         {
             //向後開
             if (target.GetComponent<playercar>().icount == 2 || target.GetComponent<playercar>().icount == 10)
@@ -38,7 +40,11 @@ public class camera : MonoBehaviour {
             else
                 transform.position = new Vector3(target.transform.position.x - 5F, transform.position.y, transform.position.z);
             transform.rotation = Quaternion.Slerp(transform.rotation, target.transform.rotation, Time.deltaTime * playerdata.FCamerafellowspeed);
+        }*/
+        transform.position = new Vector3(target.transform.position.x, target.transform.position.y , transform.position.z);
+        if (target.transform.rotation.eulerAngles.z >= 60f)
+        {
+            transform.rotation = Quaternion.Slerp(transform.rotation, target.transform.rotation, Time.deltaTime * playerdata.FCamerafellowspeed);
         }
-        
 	}
 }

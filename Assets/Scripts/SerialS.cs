@@ -7,7 +7,7 @@ public class SerialS : MonoBehaviour {
 
     public enum BtnState
     {
-        up,down,left,right,none
+        up,down,left,right,UL,DL,UR,DR,none
     };
     public float fsoundupdatetime;
     public float fx_axis;
@@ -88,9 +88,17 @@ public class SerialS : MonoBehaviour {
             ftemp = 0;
         }*/
         //nothread();
-        if (fx_axis >= 600f)
+        if (fx_axis >= 600f && fy_axis >= 600f)
+            btnstate = BtnState.UR;
+        else if (fx_axis >= 600f && fy_axis <= 400f)
+            btnstate = BtnState.UL;
+        else if (fx_axis <= 400f && fy_axis <= 400f)
+            btnstate = BtnState.DL;
+        else if (fx_axis <= 400f && fy_axis >= 600f)
+            btnstate = BtnState.DR;
+        else if (fx_axis >= 600f)
             btnstate = BtnState.up;
-        else if (fx_axis <= 400f && fx_axis!=0)
+        else if (fx_axis <= 400f && fx_axis != 0)
             btnstate = BtnState.down;
         else if (fy_axis >= 600f)
             btnstate = BtnState.right;
