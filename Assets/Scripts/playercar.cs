@@ -3,7 +3,11 @@ using System.Collections;
 
 public class playercar : MonoBehaviour {
 
+
+    public AudioClip shift;
+    public AudioClip accelerate;
     public AudioClip beep;
+    public GameObject skidmark;
     public GameObject[] stoplight;
     public GameObject[] tire;
     public GameObject arduinodata;
@@ -56,6 +60,10 @@ public class playercar : MonoBehaviour {
         {
             if (Input.GetKeyDown(KeyCode.UpArrow) || arduinodata.GetComponent<SerialS>().btnstate == SerialS.BtnState.up)
             {
+                if (!audio.isPlaying) {
+                    audio.clip = accelerate;
+                    audio.Play();
+                }
                 //transform.position += transform.forward * Time.deltaTime *playerdata.Fupspeed;
                 rigidbody2D.AddForce(new Vector2(transform.up.x, transform.up.y) * playerdata.Fspeed *Time.deltaTime);
             }
@@ -125,6 +133,7 @@ public class playercar : MonoBehaviour {
             if (arduinodata.GetComponent<SerialS>().btnstate == SerialS.BtnState.none) {
                 tire[0].transform.rotation = Quaternion.Euler(0, 0, transform.rotation.eulerAngles.z);
                 tire[1].transform.rotation = Quaternion.Euler(0, 0, transform.rotation.eulerAngles.z);
+                audio.Stop();
             }
 
             if (Input.GetKeyUp(KeyCode.Space) || arduinodata.GetComponent<SerialS>().byell)
@@ -166,6 +175,11 @@ public class playercar : MonoBehaviour {
         else if (playerdata.bstart && !arduinodata) {
             if (Input.GetKeyDown(KeyCode.UpArrow))
             {
+                if (!audio.isPlaying)
+                {
+                    audio.clip = accelerate;
+                    audio.Play();
+                }
                 //transform.position += transform.forward * Time.deltaTime *playerdata.Fupspeed;
                 rigidbody2D.AddForce(new Vector2(transform.up.x, transform.up.y) * playerdata.Fkeyspeed * Time.deltaTime);
             }
@@ -270,6 +284,9 @@ public class playercar : MonoBehaviour {
         else {
             effect.SetActive(false);
         }
+
+        
+        
      
     }
 
@@ -277,17 +294,17 @@ public class playercar : MonoBehaviour {
         switch(col.tag){
             case "SL":
                 icount++;
-                //rigidbody2D.velocity = Vector2.zero;
-                transform.Rotate(Vector3.forward, 90f);
-                Destroy(col.gameObject);
-                GOblock[icount-1].collider2D.isTrigger = false;
+
+                shifteffect();
+                //Destroy(col.gameObject);
+                //GOblock[icount-1].collider2D.isTrigger = false;
                 break;
             case "SR":
                 icount++;
-                //rigidbody2D.velocity = Vector2.zero;
-                transform.Rotate(Vector3.forward, -90f);
-                Destroy(col.gameObject);
-                GOblock[icount-1].collider2D.isTrigger = false;
+     
+                shifteffect();
+                //Destroy(col.gameObject);
+                //GOblock[icount-1].collider2D.isTrigger = false;
                 break;
             case "win":
                 playerdata.bsuccess =true;
@@ -295,6 +312,19 @@ public class playercar : MonoBehaviour {
             
         }
     }
+
+    //轉彎特效
+    void shifteffect()
+    {
+        if (!audio.isPlaying)
+        {
+            audio.clip = shift;
+            audio.Play();
+        }
+        skidmark.SetActive(true);
+        StartCoroutine(skidmarktime());
+    }
+    
 
     void OnCollisionEnter2D(Collision2D coll) {
         switch (coll.gameObject.tag) {
@@ -314,6 +344,13 @@ public class playercar : MonoBehaviour {
         yield return new WaitForSeconds(1);
         stoplight[0].SetActive(false);
         stoplight[1].SetActive(false);
+    }
+
+    IEnumerator skidmarktime()
+    {
+        yield return 0;
+        yield return new WaitForSeconds(2);
+        skidmark.SetActive(false);
     }
 
 }

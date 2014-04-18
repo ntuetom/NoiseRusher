@@ -49,6 +49,14 @@ public class carAI : MonoBehaviour
                     Destroy(gameObject);
                 Destroy(col.gameObject);
                 break;
+            case "SL":
+                transform.Rotate(Vector3.forward, 90f);
+                //GOblock[icount-1].collider2D.isTrigger = false;
+                break;
+            case "SR":
+                transform.Rotate(Vector3.forward, -90f);
+                //GOblock[icount-1].collider2D.isTrigger = false;
+                break;
         }
     }
 }

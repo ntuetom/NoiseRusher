@@ -42,7 +42,7 @@ public class camera : MonoBehaviour {
             transform.rotation = Quaternion.Slerp(transform.rotation, target.transform.rotation, Time.deltaTime * playerdata.FCamerafellowspeed);
         }*/
         transform.position = new Vector3(target.transform.position.x, target.transform.position.y , transform.position.z);
-        if (target.transform.rotation.eulerAngles.z >= 60f)
+        if (target.transform.rotation.eulerAngles.z >= 60f && target.transform.rotation.eulerAngles.z <= 270f)
         {
             transform.rotation = Quaternion.Slerp(transform.rotation, target.transform.rotation, Time.deltaTime * playerdata.FCamerafellowspeed);
         }
