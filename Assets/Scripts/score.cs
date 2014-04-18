@@ -69,9 +69,9 @@ public class score : MonoBehaviour {
             
         }
 
-        if (icount <= 0)
+        if (icount < 0)
         {
-            if (playerdata.bsuccess)
+            /*if (playerdata.bsuccess)
             {
                 Debug.Log("Good");
                 GUI.DrawTexture(rectend,endpic[1]);
@@ -79,12 +79,12 @@ public class score : MonoBehaviour {
                // Application.LoadLevel(Application.loadedLevel - 1);
             }
             else
-            {
+            {*/
                 Debug.Log("Bad");
                 GUI.DrawTexture(rectend, endpic[0]);
                 StartCoroutine(waittime());
                // Application.LoadLevel(Application.loadedLevel - 1);
-            }
+            //}
         }
         else
         {
