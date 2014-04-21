@@ -19,12 +19,14 @@ public class SerialS : MonoBehaviour {
     public BtnState btnstate;
     public bool byell;
     public bool bclick;
+    bool bclose;
     float ftemp=0,ftempsound;
     Thread myThread;
 
 	// Use this for initialization
     void Start()
     {
+        bclose = false;
         btnstate = BtnState.none;
         /*stream = new SerialPort(COMPort, 58400);
         stream.Open();
@@ -48,7 +50,7 @@ public class SerialS : MonoBehaviour {
     private void GetArduino() {
         stream = new SerialPort(COMPort, 19200);
         stream.Open();
-        while (myThread.IsAlive) {
+        while (myThread.IsAlive && !bclose) {
             
             string value = stream.ReadLine(); //Read the information
             string[] vec3 = value.Split(',');
@@ -133,11 +135,12 @@ public class SerialS : MonoBehaviour {
     
     void OnApplicationQuit()
     {
-        if (myThread.IsAlive)
-        {
-            myThread.Abort();
-            myThread.Join();
-        }
+
+        bclose = true;
+        myThread.Abort();
+        myThread.Join();
+        
+        
         
     }
 
