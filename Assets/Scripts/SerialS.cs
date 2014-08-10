@@ -41,15 +41,20 @@ public class SerialS : MonoBehaviour {
         catch (Exception e) {
             Debug.Log("Could not open serial port: " + e.Message);
         }*/
+        
         myThread = new Thread(new ThreadStart(GetArduino));
         myThread.Start();
         DontDestroyOnLoad(gameObject);
         byell = false;
+        
     }
 
     private void GetArduino() {
+        
         stream = new SerialPort(COMPort, 19200);
         stream.Open();
+        
+        Debug.Log("123");
         while (myThread.IsAlive && !bclose) {
             
             string value = stream.ReadLine(); //Read the information
