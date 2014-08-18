@@ -12,7 +12,25 @@ public class option : MonoBehaviour {
     public Texture[] texturebtn;
     public bool bStart;
 	// Use this for initialization
-  
+
+    void Init() 
+    {
+        //check = gameobject.findobjectsoftypeincludingassets()
+        //arduinoreal = assetbundle
+        RectButton = new Rect[2];
+        texturebtn = new Texture[4];
+        RectButton[0] = new Rect(0.3f,0.55f,0.4f,0.2f);
+        RectButton[1] = new Rect(0.3f,0.7f,0.4f,0.2f);
+        //texturebtn[0] = 
+        //texturebtn[1] = 
+        //texturebtn[2] =
+        //texturebtn[3] =
+    }
+
+    void Awake() {
+        Init();    
+    }
+
 	void Start () {
         if (barduino)
         {
