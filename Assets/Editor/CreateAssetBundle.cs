@@ -49,6 +49,8 @@ public class CreateAssetBundle : EditorWindow {
     static void CreatedSceneALL() {
         Caching.CleanCache();
         string Path = Application.dataPath + "/MyScene.unity3d";
-        string[] levels = {"Assets/Level.unity"};
+        string[] levels = {"Assets/scene/stage1.unity"};
+        BuildPipeline.BuildPlayer(levels, Path, BuildTarget.StandaloneWindows, BuildOptions.BuildAdditionalStreamedScenes);
+        AssetDatabase.Refresh();
     }
 }

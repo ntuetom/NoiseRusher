@@ -26,6 +26,9 @@ public class ReadAssetBundles : MonoBehaviour {
         {
             StartCoroutine(LoadALLGameObject(PathURL + "ALL.assetbundle"));
         }
+        if (GUILayout.Button("Load Scene")) {
+            StartCoroutine(LoadScene());
+        }
 
     }
 
@@ -50,5 +53,15 @@ public class ReadAssetBundles : MonoBehaviour {
         yield return Instantiate(obj0);
         yield return Instantiate(obj1);
         bundle.assetBundle.Unload(false);
+    }
+
+    private IEnumerator LoadScene() {
+        WWW download = WWW.LoadFromCacheOrDownload("file://" + Application.dataPath + "/MyScene.unity3d", 1);
+        yield return download;
+        if (download.error != null) {
+            Debug.LogError("Download Error");
+        }
+        var bundle = download.assetBundle;
+        Application.LoadLevel("stage1");
     }
 }
