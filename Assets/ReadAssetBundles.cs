@@ -56,6 +56,7 @@ public class ReadAssetBundles : MonoBehaviour {
     }
 
     private IEnumerator LoadScene() {
+        Caching.CleanCache();
         WWW download = WWW.LoadFromCacheOrDownload("file://" + Application.dataPath + "/MyScene.unity3d", 1);
         yield return download;
         if (download.error != null) {
