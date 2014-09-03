@@ -15,15 +15,16 @@ public class option : MonoBehaviour {
 
     void Init() 
     {
-        check = Resources.Load<AudioClip>("choice&enter");
+        arduinoreal = Resources.LoadAssetAtPath<GameObject>("Assets/Prefab/Arduino.prefab");
+        check = Resources.LoadAssetAtPath<AudioClip>("Assets/sound/choice&enter.mp3");
         RectButton = new Rect[2];
         texturebtn = new Texture[4];
         RectButton[0] = new Rect(0.3f,0.55f,0.4f,0.2f);
         RectButton[1] = new Rect(0.3f,0.7f,0.4f,0.2f);
-        texturebtn[0] = Resources.Load<Texture>("start game_Btn");
-        texturebtn[1] = Resources.Load<Texture>("exit.png");
-        texturebtn[2] = Resources.Load<Texture>("file://" + Application.dataPath + "/png/start game_Btnchoice.png");
-        texturebtn[3] = Resources.Load<Texture>("file://" + Application.dataPath + "/png/exit_choice.png"); 
+        texturebtn[0] = Resources.LoadAssetAtPath<Texture>("Assets/png/start game_Btn.png");
+        texturebtn[1] = Resources.LoadAssetAtPath<Texture>("Assets/png/exit.png");
+        texturebtn[2] = Resources.LoadAssetAtPath<Texture>("Assets/png/start game_Btnchoice.png");
+        texturebtn[3] = Resources.LoadAssetAtPath<Texture>("Assets/png/exit_choice.png"); 
     }
 
     void Awake() {
