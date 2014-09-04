@@ -47,11 +47,13 @@ public class main : MonoBehaviour
 
     #endregion
 
+    public GameObject _startGameObject;
     void Init() 
     {
         _data = new Data();
         _bchange = false;
         _istage = 0;
+        Instantiate(_startGameObject);
     }
   
     void Awake() {
