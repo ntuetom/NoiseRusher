@@ -10,7 +10,8 @@ public class option : MonoBehaviour {
     private Vector2 _ScreenSize = new Vector2(Screen.width,Screen.height);
     public Rect[] RectButton;
     public Texture[] texturebtn;
-    public bool bStart;
+
+    private bool bStart = main.getdata._tempdata._bStart;
 	// Use this for initialization
 
     void Init() 
@@ -43,6 +44,7 @@ public class option : MonoBehaviour {
             else
                 arduinodata = GameObject.Find("Arduino");
         }
+        //main.getdata._tempdata._bStart = true;
         bStart = true;
 	}
 	

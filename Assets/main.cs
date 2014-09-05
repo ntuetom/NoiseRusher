@@ -13,7 +13,7 @@ public class main : MonoBehaviour
         }
     }
 
-    public static Data _getdata 
+    public static Data getdata 
     {
         get
         {
@@ -50,19 +50,20 @@ public class main : MonoBehaviour
     public GameObject _startGameObject;
     void Init() 
     {
+        _instance = this;
         _data = new Data();
         _bchange = false;
         _istage = 0;
         Instantiate(_startGameObject);
     }
   
-    void Awake() {
-        GameObject.Find("Main Camera").AddComponent<option>();
+    void Awake() {      
         Init();
+        DontDestroyOnLoad(this);
     }
 	// Use this for initialization
 	void Start () {
-        
+        GameObject.Find("Main Camera").AddComponent<option>();
 	}
 	
 	// Update is called once per frame
