@@ -1,7 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class Data  {
+    public const int iStage_number = 4;
     public Car_data _cardata;
     public Stage_data _stagedata;
     public Temp_data _tempdata;
@@ -33,6 +35,10 @@ public class Data  {
 
     public struct Stage_data :IObjdata
     {
+        int[,] iArrayMap;
+        //SAVE MAP
+        List<int[]> list_StageMap;
+
         enum Stage_Level
         {
             easy, middle, hard
@@ -48,6 +54,13 @@ public class Data  {
             _enumStage_Level = new Stage_Level();
             _iCamera_Speed = 2;
             _enumStage_Level = Stage_Level.easy;
+            iArrayMap = new int[iStage_number,30]{
+                         {1,0,2,3,2,5,2,4,5,2,3,2,3,2,5,1,2,3,1,5,4,3,0,1,0,5,2,1,3,4},
+                         {1,2,3,4,5,0,2,4,3,1,0,2,2,0,1,4,3,1,0,2,4,5,1,0,2,1,4,1,2,0},
+                         {5,2,3,1,5,0,4,2,1,3,0,4,2,1,5,0,2,1,0,1,4,0,2,5,3,0,2,4,1,2},
+                         {4,0,2,3,5,1,0,0,5,1,3,0,2,1,4,2,0,1,3,4,2,0,2,1,0,1,1,0,0,3}
+                         };
+            list_StageMap = new List<int[]>();
         }
 
         public int get_isave()
@@ -91,7 +104,7 @@ public class Data  {
 
         public void Init_value()
         {
-            _enumRoad_State = new Roadstate;
+            _enumRoad_State = new Roadstate();
             _enumRoad_State = Roadstate.none;
             _bStart = true;
             _bSuccess = false;
@@ -106,6 +119,7 @@ public class Data  {
         _stagedata.Init_value();
         _tempdata = new Temp_data();
         _tempdata.Init_value();
+
     }
 	// Use this for initialization
 	void Start () {

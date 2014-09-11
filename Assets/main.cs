@@ -4,7 +4,7 @@ using System.Collections;
 public class main : MonoBehaviour
 {
 
-    #region property & variables
+    #region static property & variables
     public static main instance {
         get {
             if (_instance == null)
@@ -21,18 +21,6 @@ public class main : MonoBehaviour
         }    
     }
 
-    public static int istage {
-        get 
-        {
-            return _istage;
-        }
-        set 
-        {
-            if (value >= 0 && value <= 3)
-                _istage = value;
-        }
-    }
-
     public static bool bchange {
         get 
         {
@@ -42,9 +30,25 @@ public class main : MonoBehaviour
 
     private static main _instance = null;
     private static Data _data = null;
-    private static int _istage;
+    private static MapCreator _mapcreator = null;
     private static bool _bchange;
+    #endregion
 
+    #region property & variable
+    public int _istage_number;
+    public int istage_number
+    {
+        get
+        {
+            return _istage_number;
+        }
+        set
+        {
+            if (value >= 0 && value <= 3)
+                _istage_number = value;
+        }
+    }
+      
     #endregion
 
     public GameObject _startGameObject;
@@ -52,8 +56,9 @@ public class main : MonoBehaviour
     {
         _instance = this;
         _data = new Data();
+        _mapcreator = new MapCreator();
         _bchange = false;
-        _istage = 0;
+        _istage_number = 0;
         Instantiate(_startGameObject);
     }
   
@@ -68,6 +73,8 @@ public class main : MonoBehaviour
 	
 	// Update is called once per frame
 	void Update () {
-	    
+        if (_bchange) { 
+        
+        }
 	}
 }
