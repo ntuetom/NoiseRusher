@@ -21,17 +21,21 @@ public class main : MonoBehaviour
         }    
     }
 
-    public static bool bchange {
+    public static bool bclick {
         get 
         {
-            return _bchange;        
+            return _bclick;        
+        }
+        set 
+        {
+            _bclick = value;
         }
     }
 
     private static main _instance = null;
     private static Data _data = null;
     private static MapCreator _mapcreator = null;
-    private static bool _bchange;
+    private static bool _bclick;
     #endregion
 
     #region property & variable
@@ -50,18 +54,33 @@ public class main : MonoBehaviour
     }
       
     #endregion
+    public delegate IEnumerator Delegate_stage();
 
+    public Delegate_stage d_stage;
     public GameObject _startGameObject;
     void Init() 
     {
+        d_stage = new Delegate_stage(EnterStage1);
+        d_stage += new Delegate_stage(EnterStage2);
         _instance = this;
         _data = new Data();
         _mapcreator = new MapCreator();
-        _bchange = false;
+        _bclick = false;
         _istage_number = 0;
         Instantiate(_startGameObject);
     }
   
+    public IEnumerator EnterStage1(){       
+         getdata._tempdata.async =  Application.LoadLevelAsync(Application.loadedLevel+1);
+         yield return getdata._tempdata.async;          
+    }
+    public IEnumerator EnterStage2()
+    {
+        Debug.Log(main.bclick);
+        yield break;
+    }
+    
+
     void Awake() {      
         Init();
         DontDestroyOnLoad(this);
@@ -73,8 +92,14 @@ public class main : MonoBehaviour
 	
 	// Update is called once per frame
 	void Update () {
-        if (_bchange) { 
-        
+        if(bclick)
+        {
+            if (getdata._tempdata.bStart)
+                StartCoroutine(d_stage.Invoke());
+            else
+                Application.Quit();
         }
+        /*int progerss = (int)getdata._tempdata.async.progress * 100;
+        Debug.Log(progerss);*/
 	}
 }

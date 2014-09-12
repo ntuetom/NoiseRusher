@@ -11,9 +11,6 @@ public class option : MonoBehaviour {
     public Rect[] RectButton;
     public Texture[] texturebtn;
 
-    private bool bStart = main.getdata._tempdata._bStart;
-	// Use this for initialization
-
     void Init() 
     {
         arduinoreal = Resources.LoadAssetAtPath<GameObject>("Assets/Prefab/Arduino.prefab");
@@ -44,63 +41,75 @@ public class option : MonoBehaviour {
             else
                 arduinodata = GameObject.Find("Arduino");
         }
-        //main.getdata._tempdata._bStart = true;
-        bStart = true;
+    
 	}
 	
-	// Update is called once per frame
-	void Update () {
+	void Update ()
+    {
+        #region 如果Arduino存在
         if (barduino)
         {
             if (Input.GetKeyDown(KeyCode.UpArrow) || arduinodata.GetComponent<SerialS>().btnstate == SerialS.BtnState.up)
             {
                 if (!audio.isPlaying)
                     audio.Play();
-                bStart = true;
+                main.getdata._tempdata.bStart = true;
             }
             if (Input.GetKeyDown(KeyCode.DownArrow) || arduinodata.GetComponent<SerialS>().btnstate == SerialS.BtnState.down)
             {
-
                 if (!audio.isPlaying)
                     audio.Play();
-                bStart = false;
+                main.getdata._tempdata.bStart = false;
             }
             if (Input.GetKeyUp(KeyCode.Space) || arduinodata.GetComponent<SerialS>().bclick)
             {
+                main.bclick = true;
                 audio.PlayOneShot(check);
-                if (!bStart) Application.Quit();
+                //if (!bStart) Application.Quit();
             }
             if (Input.GetKeyUp(KeyCode.Space) || arduinodata.GetComponent<SerialS>().bclick)
             {
+                main.bclick = true;
                 audio.PlayOneShot(check);
-                if (bStart) Application.LoadLevel(Application.loadedLevel + 1);
+                //if (bStart) Application.LoadLevel(Application.loadedLevel + 1);
             }
         }
+        #endregion
+        #region PC_Keyboard
         else {
             if (Input.GetKeyDown(KeyCode.UpArrow) )
             {
                 audio.Play();
-                bStart = true;
+                main.getdata._tempdata.bStart = true;
             }
             if (Input.GetKeyDown(KeyCode.DownArrow) )
             {
                 audio.Play();
-                bStart = false;
+                main.getdata._tempdata.bStart = false;
             }
             if (Input.GetKeyUp(KeyCode.Space))
             {
+                main.bclick = true;
                 audio.clip = check;
                 audio.Play();
-                if (!bStart) Application.Quit();
             }
-            if (Input.GetKeyUp(KeyCode.Space) )
+            else
             {
+                main.bclick = false;
+            }
+            if (Input.GetKeyUp(KeyCode.Space))
+            {
+                main.bclick = true;
                 audio.clip = check;
                 audio.Play();
-                if (bStart) Application.LoadLevel(Application.loadedLevel + 1);
+            }
+            else
+            {
+                main.bclick = false;
             }
         
         }
+        #endregion
 	}
 
     void OnGUI() {
@@ -116,13 +125,13 @@ public class option : MonoBehaviour {
                                 , RectButton[i].height * _ScreenSize.y);
                 if (i == 0)
                 {
-                    if (bStart)
+                    if (main.getdata._tempdata.bStart)
                         GUI.DrawTexture(rect[i], texturebtn[i+2]);
                     else
                         GUI.DrawTexture(rect[i], texturebtn[i]);
                 }
                 else {
-                    if (bStart)
+                    if (main.getdata._tempdata.bStart)
                         GUI.DrawTexture(rect[i], texturebtn[i]);
                     else
                         GUI.DrawTexture(rect[i], texturebtn[i+2]);

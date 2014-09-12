@@ -80,11 +80,22 @@ public class Data  {
         }
         Roadstate _enumRoad_State;
         //用於關卡
-        public bool _bSuccess;
+        bool _bSuccess;
         //用於選單
-        public bool _bStart;
+        bool _bStart;
+        //Loading進度用
+        AsyncOperation _async;
 
-        bool bSuccess {
+        public AsyncOperation async 
+        {
+            get {
+                return _async;
+            }
+            set{
+                _async = value;
+            }
+        }
+        public bool bSuccess {
             get {
                 return _bSuccess;
             }
@@ -93,7 +104,7 @@ public class Data  {
             }
         }
 
-        bool bStart {
+        public bool bStart {
             get { 
                 return _bStart;
             }
@@ -101,6 +112,8 @@ public class Data  {
                 _bStart = value;
             }
         }
+
+
 
         public void Init_value()
         {
